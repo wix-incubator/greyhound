@@ -1,8 +1,7 @@
 package com.wixpress.dst.greyhound.core
 
 import java.time.Instant
-
-import org.apache.kafka.common.serialization.Serdes.{IntegerSerde, LongSerde, StringSerde}
+import org.apache.kafka.common.serialization.Serdes.{IntegerSerde, LongSerde, StringSerde, VoidSerde}
 import org.apache.kafka.common.serialization.{Serde => KafkaSerde}
 import zio.duration.Duration
 import zio.{Chunk, Task}
@@ -31,4 +30,5 @@ object Serdes {
   val LongSerde = Serde(new LongSerde).inmap(_.toLong)(java.lang.Long.valueOf)
   val InstantSerde = LongSerde.inmap(Instant.ofEpochMilli)(_.toEpochMilli)
   val DurationSerde = LongSerde.inmap(Duration.fromNanos)(_.toNanos)
+  val UnitSerde = Serde(new VoidSerde).inmap(_ => Unit)(_ => null)
 }
